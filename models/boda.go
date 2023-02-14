@@ -6,9 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type Guests struct {
+type Guest struct {
 	gorm.Model
-	Id          uint64 `gorm:"primaryKey"`
 	Name        string
 	GroupId     string
 	Table       int64
@@ -17,22 +16,19 @@ type Guests struct {
 	Description string
 }
 
-type AgeRanges struct {
+type AgeRange struct {
 	gorm.Model
-	Id    uint64 `gorm:"primaryKey"`
 	Range string
 }
 
 // Puede ser por familia, por escuela,
-type Groups struct {
+type Group struct {
 	gorm.Model
-	Id   uint64 `gorm:"primaryKey"`
 	Name string
 }
 
-type Paymets struct {
+type Paymet struct {
 	gorm.Model
-	Id          uint64 `gorm:"primaryKey"`
 	FundingId   int64
 	Amount      float64
 	Pending     float64
@@ -42,9 +38,8 @@ type Paymets struct {
 // Por ejemplo: WeddingPlaner, Cuando se contrató,
 // cuanto va a cobrar, organización a que pertenece,
 // fecha limite de pago, datos de contactó
-type Concepts struct {
+type Concept struct {
 	gorm.Model
-	Id            uint64 `gorm:"primaryKey"`
 	ContactId     int64
 	Organization  string
 	ContractDate  time.Time
@@ -55,15 +50,13 @@ type Concepts struct {
 }
 
 // Si ya se liquidó, si está en busqueda, reunión pendeinte,
-type KindStatus struct {
+type KindStatu struct {
 	gorm.Model
-	Id   uint64 `gorm:"primaryKey"`
 	Name string
 }
 
 type ContactInfo struct {
 	gorm.Model
-	Id        uint64 `gorm:"primaryKey"`
 	Name      string
 	Cellphone string
 	Email     string
@@ -75,14 +68,12 @@ type ContactInfo struct {
 // Si es pronaces o CONACYT o Karla o Pedro o Oliver
 type Funding struct {
 	gorm.Model
-	Id   uint64 `gorm:"primaryKey"`
 	Name string
 }
 
 // Pendiente de una tabla para ir abondando los recursos
 type AccumulatedMoney struct {
 	gorm.Model
-	Id          uint64 `gorm:"primaryKey"`
 	FundingId   int64
 	Amount      float64
 	Accumulated float64
