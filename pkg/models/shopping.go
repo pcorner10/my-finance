@@ -32,7 +32,7 @@ type KindProducts struct {
 	Name string
 }
 
-type Store struct {
+type Stores struct {
 	gorm.Model
 	Id       uint64 `gorm:"primaryKey"`
 	Name     string
