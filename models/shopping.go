@@ -9,6 +9,7 @@ import (
 
 type CreditCard struct {
 	LastNumbers     uint64
+	UserId          int64
 	Bank            string
 	IsCredit        bool
 	DatePayment     time.Time
@@ -35,7 +36,7 @@ func (cc *CreditCard) GetCreditCardByBank() (*CreditCard, error) {
 }
 
 func (cc *CreditCard) UpdateCreditCard() (*CreditCard, error) {
-	err := database.Database.Model(cc).Updates(cc).Error
+	err := database.Database.Updates(cc).Error
 	if err != nil {
 		return nil, err
 	}
@@ -44,6 +45,7 @@ func (cc *CreditCard) UpdateCreditCard() (*CreditCard, error) {
 }
 
 func (cc *CreditCard) DeleteCreditCard() (*CreditCard, error) {
+	err := database.Database.Delete(cc).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,11 +53,13 @@ func (cc *CreditCard) DeleteCreditCard() (*CreditCard, error) {
 
 }
 
-func (cc *CreditCard) GetCreditCards() (*[]CreditCard, error) {
+func (cc *CreditCard) GetCreditCardsById() (*[]CreditCard, error) {
+	var creditCards *[]CreditCard
+	err := database.Database.Where("user_id = ?", cc.UserId).Find(creditCards).Error
 	if err != nil {
 		return nil, err
 	}
-	return cc, nil
+	return creditCards, nil
 }
 
 // Hace referencia al tipo de operación que es; despensa, osio,
@@ -72,23 +76,18 @@ func (ko *KindOperation) CreateKindOperation() (*KindOperation, error) {
 	return ko, nil
 }
 
-func (ko *KindOperation) GetKindOperation() (*KindOperation, error) {
-	if err != nil {
-		return nil, err
-	}
-	return ko, nil
-
-}
-
 func (ko *KindOperation) GetKindOperations() (*[]KindOperation, error) {
+	var kindOperations *[]KindOperation
+	err := database.Database.Find(kindOperations).Error
 	if err != nil {
 		return nil, err
 	}
-	return ko, nil
+	return kindOperations, nil
 
 }
 
 func (ko *KindOperation) UpdateKindOperation() (*KindOperation, error) {
+	err := database.Database.Updates(ko).Error
 	if err != nil {
 		return nil, err
 	}
@@ -97,6 +96,7 @@ func (ko *KindOperation) UpdateKindOperation() (*KindOperation, error) {
 }
 
 func (ko *KindOperation) DeleteKindOperation() (*KindOperation, error) {
+	err := database.Database.Delete(ko).Error
 	if err != nil {
 		return nil, err
 	}
@@ -118,15 +118,8 @@ func (kp *KindProduct) CreateKindProduct() (*KindProduct, error) {
 	return kp, nil
 }
 
-func (kp *KindProduct) GetKindProduct() (*KindProduct, error) {
-	if err != nil {
-		return nil, err
-	}
-	return kp, nil
-
-}
-
 func (kp *KindProduct) UpdateKindProduct() (*KindProduct, error) {
+	err := database.Database.Updates(kp).Error
 	if err != nil {
 		return nil, err
 	}
@@ -135,6 +128,7 @@ func (kp *KindProduct) UpdateKindProduct() (*KindProduct, error) {
 }
 
 func (kp *KindProduct) DeleteKindProduct() (*KindProduct, error) {
+	err := database.Database.Delete(kp).Error
 	if err != nil {
 		return nil, err
 	}
@@ -143,10 +137,12 @@ func (kp *KindProduct) DeleteKindProduct() (*KindProduct, error) {
 }
 
 func (kp *KindProduct) GetKindProducts() (*[]KindProduct, error) {
+	var kindProducts *[]KindProduct
+	err := database.Database.Find(kindProducts).Error
 	if err != nil {
 		return nil, err
 	}
-	return kp, nil
+	return kindProducts, nil
 
 }
 
@@ -164,15 +160,8 @@ func (s *Store) CreateStore() (*Store, error) {
 	return s, nil
 }
 
-func (s *Store) GetStore() (*Store, error) {
-	if err != nil {
-		return nil, err
-	}
-	return s, nil
-
-}
-
 func (s *Store) UpdateStore() (*Store, error) {
+	err := database.Database.Updates(s).Error
 	if err != nil {
 		return nil, err
 	}
@@ -181,6 +170,7 @@ func (s *Store) UpdateStore() (*Store, error) {
 }
 
 func (s *Store) DeleteStore() (*Store, error) {
+	err := database.Database.Delete(s).Error
 	if err != nil {
 		return nil, err
 	}
@@ -189,11 +179,17 @@ func (s *Store) DeleteStore() (*Store, error) {
 }
 
 func (s *Store) GetStores() (*[]Store, error) {
-
+	var Stores *[]Store
+	err := database.Database.Find(Stores).Error
+	if err != nil {
+		return nil, err
+	}
+	return Stores, nil
 }
 
 type MonthlyPayment struct {
 	gorm.Model
+	UserId       int64
 	CreditCardId int64
 	MonthlyPaid  float64
 	Pending      float64
@@ -207,7 +203,8 @@ func (mp *MonthlyPayment) CreateMonthlyPayment() (*MonthlyPayment, error) {
 	return mp, nil
 }
 
-func (mp *MonthlyPayment) GetMonthlyPayment() (*MonthlyPayment, error) {
+func (mp *MonthlyPayment) GetMonthlyPaymentByCreditCard() (*MonthlyPayment, error) {
+	err := database.Database.Where("credit_card_id = ?", mp.CreditCardId).First(mp).Error
 	if err != nil {
 		return nil, err
 	}
@@ -216,6 +213,7 @@ func (mp *MonthlyPayment) GetMonthlyPayment() (*MonthlyPayment, error) {
 }
 
 func (mp *MonthlyPayment) UpdateMonthlyPayment() (*MonthlyPayment, error) {
+	err := database.Database.Updates(mp).Error
 	if err != nil {
 		return nil, err
 	}
@@ -224,6 +222,7 @@ func (mp *MonthlyPayment) UpdateMonthlyPayment() (*MonthlyPayment, error) {
 }
 
 func (mp *MonthlyPayment) DeleteMonthlyPayment() (*MonthlyPayment, error) {
+	err := database.Database.Delete(mp).Error
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +231,12 @@ func (mp *MonthlyPayment) DeleteMonthlyPayment() (*MonthlyPayment, error) {
 }
 
 func (mp *MonthlyPayment) GetMonthlyPayments() (*[]MonthlyPayment, error) {
+	var MonthlyPayments *[]MonthlyPayment
+	err := database.Database.Where("user_id = ?", mp.UserId).Find(MonthlyPayments).Error
 	if err != nil {
 		return nil, err
 	}
-	return mp, nil
+	return MonthlyPayments, nil
 
 }
 
@@ -260,15 +261,8 @@ func (o *Operation) CreateOperation() (*Operation, error) {
 	return o, nil
 }
 
-func (o *Operation) GetOperation() (*Operation, error) {
-	if err != nil {
-		return nil, err
-	}
-	return o, nil
-
-}
-
 func (o *Operation) UpdateOperation() (*Operation, error) {
+	err := database.Database.Updates(o).Error
 	if err != nil {
 		return nil, err
 	}
@@ -277,6 +271,7 @@ func (o *Operation) UpdateOperation() (*Operation, error) {
 }
 
 func (o *Operation) DeleteOperation() (*Operation, error) {
+	err := database.Database.Delete(o).Error
 	if err != nil {
 		return nil, err
 	}
@@ -284,10 +279,14 @@ func (o *Operation) DeleteOperation() (*Operation, error) {
 
 }
 
-func (o *Operation) GetOperations() (*[]Operation, error) {
+func (o *Operation) GetOperationsByDateRange(startDate, endDate time.Time) (*[]Operation, error) {
+
+	var operations *[]Operation
+	err := database.Database.Where("created_at BETWEEN ? AND ?").Find(operations).Error
+
 	if err != nil {
 		return nil, err
 	}
-	return o, nil
+	return operations, nil
 
 }
