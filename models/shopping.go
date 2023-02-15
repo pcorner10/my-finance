@@ -26,20 +26,36 @@ func (cc *CreditCard) CreateCreditCard() (*CreditCard, error) {
 	return cc, nil
 }
 
+func (cc *CreditCard) GetCreditCardByBank() (*CreditCard, error) {
+	err := database.Database.Where("bank = ? AND is_credit = true").First(cc).Error
+	if err != nil {
+		return nil, err
+	}
+	return cc, nil
+}
+
 func (cc *CreditCard) UpdateCreditCard() (*CreditCard, error) {
-
-}
-
-func (cc *CreditCard) GetCreditCards() (*[]CreditCard, error) {
-
-}
-
-func (cc *CreditCard) GetCreditCard() (*CreditCard, error) {
+	err := database.Database.Model(cc).Updates(cc).Error
+	if err != nil {
+		return nil, err
+	}
+	return cc, nil
 
 }
 
 func (cc *CreditCard) DeleteCreditCard() (*CreditCard, error) {
+	if err != nil {
+		return nil, err
+	}
+	return cc, nil
 
+}
+
+func (cc *CreditCard) GetCreditCards() (*[]CreditCard, error) {
+	if err != nil {
+		return nil, err
+	}
+	return cc, nil
 }
 
 // Hace referencia al tipo de operación que es; despensa, osio,
@@ -49,22 +65,42 @@ type KindOperation struct {
 }
 
 func (ko *KindOperation) CreateKindOperation() (*KindOperation, error) {
-
+	err := database.Database.Create(ko).Error
+	if err != nil {
+		return nil, err
+	}
+	return ko, nil
 }
 
 func (ko *KindOperation) GetKindOperation() (*KindOperation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return ko, nil
 
 }
 
-func (ko *KindOperation) GetKindOperations() (*KindOperation, error) {
+func (ko *KindOperation) GetKindOperations() (*[]KindOperation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return ko, nil
 
 }
 
 func (ko *KindOperation) UpdateKindOperation() (*KindOperation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return ko, nil
 
 }
 
 func (ko *KindOperation) DeleteKindOperation() (*KindOperation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return ko, nil
 
 }
 
@@ -75,22 +111,42 @@ type KindProduct struct {
 }
 
 func (kp *KindProduct) CreateKindProduct() (*KindProduct, error) {
-
+	err := database.Database.Create(kp).Error
+	if err != nil {
+		return nil, err
+	}
+	return kp, nil
 }
 
 func (kp *KindProduct) GetKindProduct() (*KindProduct, error) {
+	if err != nil {
+		return nil, err
+	}
+	return kp, nil
 
 }
 
 func (kp *KindProduct) UpdateKindProduct() (*KindProduct, error) {
+	if err != nil {
+		return nil, err
+	}
+	return kp, nil
 
 }
 
 func (kp *KindProduct) DeleteKindProduct() (*KindProduct, error) {
+	if err != nil {
+		return nil, err
+	}
+	return kp, nil
 
 }
 
 func (kp *KindProduct) GetKindProducts() (*[]KindProduct, error) {
+	if err != nil {
+		return nil, err
+	}
+	return kp, nil
 
 }
 
@@ -101,18 +157,34 @@ type Store struct {
 }
 
 func (s *Store) CreateStore() (*Store, error) {
-
+	err := database.Database.Create(s).Error
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
 }
 
 func (s *Store) GetStore() (*Store, error) {
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
 
 }
 
 func (s *Store) UpdateStore() (*Store, error) {
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
 
 }
 
 func (s *Store) DeleteStore() (*Store, error) {
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
 
 }
 
@@ -127,23 +199,43 @@ type MonthlyPayment struct {
 	Pending      float64
 }
 
-func (s *MonthlyPayment) CreateMonthlyPayment() (*MonthlyPayment, error) {
+func (mp *MonthlyPayment) CreateMonthlyPayment() (*MonthlyPayment, error) {
+	err := database.Database.Create(mp).Error
+	if err != nil {
+		return nil, err
+	}
+	return mp, nil
+}
+
+func (mp *MonthlyPayment) GetMonthlyPayment() (*MonthlyPayment, error) {
+	if err != nil {
+		return nil, err
+	}
+	return mp, nil
 
 }
 
-func (s *MonthlyPayment) GetMonthlyPayment() (*MonthlyPayment, error) {
+func (mp *MonthlyPayment) UpdateMonthlyPayment() (*MonthlyPayment, error) {
+	if err != nil {
+		return nil, err
+	}
+	return mp, nil
 
 }
 
-func (s *MonthlyPayment) UpdateMonthlyPayment() (*MonthlyPayment, error) {
+func (mp *MonthlyPayment) DeleteMonthlyPayment() (*MonthlyPayment, error) {
+	if err != nil {
+		return nil, err
+	}
+	return mp, nil
 
 }
 
-func (s *MonthlyPayment) DeleteMonthlyPayment() (*MonthlyPayment, error) {
-
-}
-
-func (s *MonthlyPayment) GetMonthlyPayments() (*[]MonthlyPayment, error) {
+func (mp *MonthlyPayment) GetMonthlyPayments() (*[]MonthlyPayment, error) {
+	if err != nil {
+		return nil, err
+	}
+	return mp, nil
 
 }
 
@@ -158,4 +250,44 @@ type Operation struct {
 	Description     string
 	Periods         int64
 	PendingPeriods  int64
+}
+
+func (o *Operation) CreateOperation() (*Operation, error) {
+	err := database.Database.Create(o).Error
+	if err != nil {
+		return nil, err
+	}
+	return o, nil
+}
+
+func (o *Operation) GetOperation() (*Operation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return o, nil
+
+}
+
+func (o *Operation) UpdateOperation() (*Operation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return o, nil
+
+}
+
+func (o *Operation) DeleteOperation() (*Operation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return o, nil
+
+}
+
+func (o *Operation) GetOperations() (*[]Operation, error) {
+	if err != nil {
+		return nil, err
+	}
+	return o, nil
+
 }
