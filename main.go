@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/pcorner10/my-finance/controller"
+	"github.com/pcorner10/my-finance/api/controller"
+	"github.com/pcorner10/my-finance/api/models"
 	"github.com/pcorner10/my-finance/database"
 	"github.com/pcorner10/my-finance/middleware"
-	"github.com/pcorner10/my-finance/models"
 )
 
 func main() {
@@ -45,8 +45,33 @@ func serveApplication() {
 	publicRoutes.POST("/register", controller.Register)
 	publicRoutes.POST("/login", controller.Login)
 
-	protectedRoutes := router.Group("/api")
-	protectedRoutes.Use(middleware.JWTAuthMiddleware())
+	privateRoutes := router.Group("/api")
+	privateRoutes.Use(middleware.JWTAuthMiddleware())
+
+	{
+		shopping := privateRoutes.Group("/shopping")
+
+		{
+			creditCard := shopping.Group("/credit_card")
+			creditCard.POST("/create", controller.CreateCreditCard)
+			creditCard.GET("/getbyid", controller.GetCreditCardsByUserId)
+
+			kindOperation := shopping.Group("/kind_operation")
+			kindOperation.POST("/create", controller.CreateKindOperation)
+
+			products := shopping.Group("/products")
+			products.POST("/create", controller.CreateKindProduct)
+
+			store := shopping.Group("/store")
+			store.POST("/create", controller.CreateStore)
+
+			monthlyPayment := shopping.Group("/monthly_payments")
+			monthlyPayment.POST("/create", controller.CreateMonthlyPayment)
+
+			operation := shopping.Group("/operation")
+			operation.POST("/create", controller.CreateOperation)
+		}
+	}
 
 	router.Run(":8000")
 	fmt.Println("Server running on port 8000")

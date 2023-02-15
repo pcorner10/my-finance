@@ -11,10 +11,11 @@ import (
 
 type User struct {
 	gorm.Model
-	Name     string
-	LastName string
-	UserName string `gorm:"size:255;not null;unique" json:"username"`
-	Password string `gorm:"size:255;not null;" json:"-"`
+	Name        string
+	LastName    string
+	UserName    string `gorm:"size:255;not null;unique" json:"username"`
+	Password    string `gorm:"size:255;not null;" json:"-"`
+	CreditCards []CreditCard
 }
 
 func (u *User) GetUserByUsername() (*User, error) {

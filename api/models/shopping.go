@@ -8,6 +8,7 @@ import (
 )
 
 type CreditCard struct {
+	gorm.Model
 	LastNumbers     uint64
 	UserId          int64
 	Bank            string
@@ -16,15 +17,14 @@ type CreditCard struct {
 	DateCutoff      time.Time
 	CreditLimit     float64
 	CreditAvailable float64
-	gorm.Model
 }
 
-func (cc *CreditCard) CreateCreditCard() (*CreditCard, error) {
+func (cc *CreditCard) CreateCreditCard() error {
 	err := database.Database.Create(cc).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return cc, nil
+	return nil
 }
 
 func (cc *CreditCard) GetCreditCardByBank() (*CreditCard, error) {
@@ -53,7 +53,7 @@ func (cc *CreditCard) DeleteCreditCard() (*CreditCard, error) {
 
 }
 
-func (cc *CreditCard) GetCreditCardsById() (*[]CreditCard, error) {
+func (cc *CreditCard) GetCreditCardsByUserId() (*[]CreditCard, error) {
 	var creditCards *[]CreditCard
 	err := database.Database.Where("user_id = ?", cc.UserId).Find(creditCards).Error
 	if err != nil {
@@ -68,12 +68,12 @@ type KindOperation struct {
 	Name int64
 }
 
-func (ko *KindOperation) CreateKindOperation() (*KindOperation, error) {
+func (ko *KindOperation) CreateKindOperation() error {
 	err := database.Database.Create(ko).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return ko, nil
+	return nil
 }
 
 func (ko *KindOperation) GetKindOperations() (*[]KindOperation, error) {
@@ -110,12 +110,12 @@ type KindProduct struct {
 	Name string
 }
 
-func (kp *KindProduct) CreateKindProduct() (*KindProduct, error) {
+func (kp *KindProduct) CreateKindProduct() error {
 	err := database.Database.Create(kp).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return kp, nil
+	return nil
 }
 
 func (kp *KindProduct) UpdateKindProduct() (*KindProduct, error) {
@@ -152,12 +152,12 @@ type Store struct {
 	IsOnline bool
 }
 
-func (s *Store) CreateStore() (*Store, error) {
+func (s *Store) CreateStore() error {
 	err := database.Database.Create(s).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return s, nil
+	return nil
 }
 
 func (s *Store) UpdateStore() (*Store, error) {
@@ -195,12 +195,12 @@ type MonthlyPayment struct {
 	Pending      float64
 }
 
-func (mp *MonthlyPayment) CreateMonthlyPayment() (*MonthlyPayment, error) {
+func (mp *MonthlyPayment) CreateMonthlyPayment() error {
 	err := database.Database.Create(mp).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return mp, nil
+	return nil
 }
 
 func (mp *MonthlyPayment) GetMonthlyPaymentByCreditCard() (*MonthlyPayment, error) {
@@ -251,14 +251,19 @@ type Operation struct {
 	Description     string
 	Periods         int64
 	PendingPeriods  int64
+	User            User
+	CreditCard      CreditCard
+	Store           Store
+	KindOperation   KindOperation
+	KindProduct     KindProduct
 }
 
-func (o *Operation) CreateOperation() (*Operation, error) {
+func (o *Operation) CreateOperation() error {
 	err := database.Database.Create(o).Error
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return o, nil
+	return nil
 }
 
 func (o *Operation) UpdateOperation() (*Operation, error) {
@@ -279,14 +284,19 @@ func (o *Operation) DeleteOperation() (*Operation, error) {
 
 }
 
-func (o *Operation) GetOperationsByDateRange(startDate, endDate time.Time) (*[]Operation, error) {
+func (o *Operation) GetOperationsByDateRange(DateRange DateRange) (*[]Operation, error) {
 
 	var operations *[]Operation
-	err := database.Database.Where("created_at BETWEEN ? AND ?").Find(operations).Error
+	err := database.Database.Where("user_id = ? AND created_at BETWEEN ? AND ?", o.UserId, DateRange.StartDate, DateRange.EndDate).Find(operations).Error
 
 	if err != nil {
 		return nil, err
 	}
 	return operations, nil
 
+}
+
+type DateRange struct {
+	StartDate time.Time
+	EndDate   time.Time
 }

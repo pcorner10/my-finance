@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pcorner10/my-finance/models"
+	"github.com/pcorner10/my-finance/api/models"
 	"github.com/pcorner10/my-finance/utility"
 )
 
@@ -16,14 +16,7 @@ func Register(ctx *gin.Context) {
 		return
 	}
 
-	user := models.User{
-		UserName: input.UserName,
-		Password: input.Password,
-		Name: input.Name,
-		LastName: input.LastName,
-	}
-
-	savedUser, err := user.Save()
+	savedUser, err := input.Save()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

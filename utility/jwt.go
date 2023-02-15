@@ -10,7 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/pcorner10/my-finance/models"
+	"github.com/pcorner10/my-finance/api/models"
 )
 
 var privateKey = []byte(os.Getenv("JWT_PRIVATE_KEY"))
