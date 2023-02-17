@@ -13,14 +13,14 @@ type User struct {
 	gorm.Model
 	Name        string
 	LastName    string
-	UserName    string `gorm:"size:255;not null;unique" json:"username"`
+	UserName    string `gorm:"size:255;not null;unique" json:"user_name"`
 	Password    string `gorm:"size:255;not null;" json:"-"`
 	CreditCards []CreditCard
 }
 
 func (u *User) GetUserByUsername() (*User, error) {
 
-	err := database.Database.First(u, "username = ?", u.UserName).Error
+	err := database.Database.First(u, "user_name = ?", u.UserName).Error
 	if err != nil {
 		return nil, err
 	}

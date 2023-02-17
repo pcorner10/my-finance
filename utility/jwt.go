@@ -43,7 +43,15 @@ func CurrentUser(context *gin.Context) (models.User, error) {
 		return models.User{}, err
 	}
 	token, _ := getToken(context)
-	claims, _ := token.Claims.(jwt.MapClaims)
+	
+	var claims jwt.MapClaims
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		fmt.Println(claims["id"], claims["eat"])
+	} else {
+		fmt.Println(err)
+	}
+
 	userId := uint(claims["id"].(float64))
 
 	user, err := models.FindUserById(userId)
@@ -56,10 +64,12 @@ func CurrentUser(context *gin.Context) (models.User, error) {
 func getToken(context *gin.Context) (*jwt.Token, error) {
 	tokenString := getTokenFromRequest(context)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return privateKey, nil
 	})
 	return token, err
@@ -67,8 +77,10 @@ func getToken(context *gin.Context) (*jwt.Token, error) {
 
 func getTokenFromRequest(context *gin.Context) string {
 	bearerToken := context.Request.Header.Get("Authorization")
+
 	splitToken := strings.Split(bearerToken, " ")
 	if len(splitToken) == 2 {
+		fmt.Println(splitToken[1], "samina")
 		return splitToken[1]
 	}
 	return ""

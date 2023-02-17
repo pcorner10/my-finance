@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/pcorner10/my-finance/api/controller"
@@ -41,6 +42,17 @@ func loadDatabase() {
 func serveApplication() {
 	router := gin.Default()
 
+	// Add CORS middleware
+
+	// unable credentials
+	
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"*"}
+	router.Use(cors.New(config))
+
 	publicRoutes := router.Group("/auth")
 	publicRoutes.POST("/register", controller.Register)
 	publicRoutes.POST("/login", controller.Login)
@@ -73,6 +85,6 @@ func serveApplication() {
 		}
 	}
 
-	router.Run(":8000")
-	fmt.Println("Server running on port 8000")
+	router.Run(":8080")
+	fmt.Println("Server running on port 8080")
 }

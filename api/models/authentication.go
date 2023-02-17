@@ -1,6 +1,6 @@
 package models
 
 type AuthenticationInput struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Username string `json:"user_name" binding:"required"`
+	Password string `json:"pass_word" binding:"required"`
 }

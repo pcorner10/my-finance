@@ -26,7 +26,10 @@ func Register(ctx *gin.Context) {
 }
 
 func Login(context *gin.Context) {
-	var input models.AuthenticationInput
+	var input models.User
+	// create an interface to hold the input
+
+	// bind the input to the interface
 
 	if err := context.ShouldBindJSON(&input); err != nil {
 
@@ -35,7 +38,7 @@ func Login(context *gin.Context) {
 	}
 
 	user := &models.User{
-		UserName: input.Username,
+		UserName: input.UserName,
 	}
 
 	user, err := user.GetUserByUsername()
@@ -58,5 +61,9 @@ func Login(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"jwt": jwt})
+	context.JSON(http.StatusOK, gin.H{
+		"jwt":      jwt,
+		"fullname": user.Name + " " + user.LastName,
+		"userid":   user.ID,
+	})
 }

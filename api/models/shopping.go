@@ -132,8 +132,8 @@ func (kp *KindProduct) DeleteKindProduct() (*KindProduct, error) {
 	if err != nil {
 		return nil, err
 	}
-	return kp, nil
 
+	return kp, nil
 }
 
 func (kp *KindProduct) GetKindProducts() (*[]KindProduct, error) {
