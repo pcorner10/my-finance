@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pcorner10/my-finance/api/models"
@@ -25,20 +27,21 @@ func CreateCreditCard(ctx *gin.Context) {
 }
 
 func GetCreditCardsByUserId(ctx *gin.Context) {
-
+	userID := ctx.Param("id")
 	var input models.CreditCard
-	if err := ctx.ShouldBindJSON(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 
+	// userID is a string, so we need to convert it to an int64
+	userIDInt, _ := strconv.ParseInt(userID, 10, 64)
+
+	input.UserId = userIDInt
 	listCreditCard, err := input.GetCreditCardsByUserId()
 	if err != nil {
+		fmt.Println(err, "error2")
 		ctx.JSON(http.StatusBadRequest, gin.H{"CreditCards": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusFound, gin.H{"user": listCreditCard})
+	ctx.JSON(http.StatusOK, gin.H{"listCreditCards": listCreditCard})
 }
 
 func CreateKindOperation(ctx *gin.Context) {
@@ -58,6 +61,19 @@ func CreateKindOperation(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"KindOperation": input})
 }
 
+func GetKindOperations(ctx *gin.Context) {
+
+	var input models.KindOperation
+
+	listKindOperation, err := input.GetKindOperations()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"KindOperations": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"KindOperations": listKindOperation})
+}
+
 func CreateKindProduct(ctx *gin.Context) {
 
 	var input models.KindProduct
@@ -73,6 +89,18 @@ func CreateKindProduct(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{"KindProduct": input})
+}
+
+func GetKindProducts(ctx *gin.Context) {
+
+	var input models.KindProduct
+	listKindProduct, err := input.GetKindProducts()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"KindProducts": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"KindProducts": listKindProduct})
 }
 
 func CreateStore(ctx *gin.Context) {
@@ -92,6 +120,19 @@ func CreateStore(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"Store": input})
 }
 
+func GetStores(ctx *gin.Context) {
+
+	var input models.Store
+
+	listStore, err := input.GetStores()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"Stores": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"Stores": listStore})
+}
+
 func CreateMonthlyPayment(ctx *gin.Context) {
 
 	var input models.MonthlyPayment
@@ -107,6 +148,23 @@ func CreateMonthlyPayment(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{"MonthlyPayment": input})
+}
+
+func GetMonthlyPaymentByCreditCard(ctx *gin.Context) {
+
+	var input models.MonthlyPayment
+	if err := ctx.ShouldBindJSON(&input); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	listMonthlyPayment, err := input.GetMonthlyPaymentByCreditCard()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"MonthlyPayments": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"MonthlyPayments": listMonthlyPayment})
 }
 
 func CreateOperation(ctx *gin.Context) {

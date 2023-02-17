@@ -66,19 +66,23 @@ func serveApplication() {
 		{
 			creditCard := shopping.Group("/credit_card")
 			creditCard.POST("/create", controller.CreateCreditCard)
-			creditCard.GET("/getbyid", controller.GetCreditCardsByUserId)
+			creditCard.GET("/getbyid/:id", controller.GetCreditCardsByUserId)
 
 			kindOperation := shopping.Group("/kind_operation")
 			kindOperation.POST("/create", controller.CreateKindOperation)
+			kindOperation.GET("/get", controller.GetKindOperations)
 
 			products := shopping.Group("/products")
 			products.POST("/create", controller.CreateKindProduct)
+			products.GET("/get", controller.GetKindProducts)
 
 			store := shopping.Group("/store")
 			store.POST("/create", controller.CreateStore)
+			store.GET("/get", controller.GetStores)
 
 			monthlyPayment := shopping.Group("/monthly_payments")
 			monthlyPayment.POST("/create", controller.CreateMonthlyPayment)
+			monthlyPayment.GET("/getbycreditcard", controller.GetMonthlyPaymentByCreditCard)
 
 			operation := shopping.Group("/operation")
 			operation.POST("/create", controller.CreateOperation)
