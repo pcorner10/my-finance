@@ -11,7 +11,6 @@ func CreateCreditCard(ctx *gin.Context) {
 	var cc models.CreditCard
 
 	if err := ctx.ShouldBindJSON(&cc); err != nil {
-
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

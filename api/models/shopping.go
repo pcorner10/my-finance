@@ -9,14 +9,14 @@ import (
 
 type CreditCard struct {
 	gorm.Model
-	LastNumbers     uint64
-	UserId          int64
-	Bank            string
-	IsCredit        bool
-	DatePayment     time.Time
-	DateCutoff      time.Time
-	CreditLimit     float64
-	CreditAvailable float64
+	LastNumbers     uint64    `json:"last_numbers,string" binding:"required" gorm:"unique;not null"`
+	UserId          int64     `json:"user_id,string" binding:"required"`
+	Bank            string    `json:"bank" binding:"required"`
+	IsCredit        bool      `json:"is_credit,string" binding:"required"`
+	DatePayment     time.Time `json:"date_payment" binding:"required"`
+	DateCutoff      time.Time `json:"date_cutoff" binding:"required"`
+	CreditLimit     float64   `json:"credit_limit,string" binding:"required"`
+	CreditAvailable float64   `json:"credit_available,string" binding:"required"`
 }
 
 func (cc *CreditCard) CreateCreditCard() error {
@@ -65,7 +65,7 @@ func (cc *CreditCard) GetCreditCardsByUserId() (*[]CreditCard, error) {
 // Hace referencia al tipo de operación que es; despensa, osio,
 type KindOperation struct {
 	gorm.Model
-	Name int64
+	Name string `json:"name_operation" binding:"required"`
 }
 
 func (ko *KindOperation) CreateKindOperation() error {
@@ -107,7 +107,7 @@ func (ko *KindOperation) DeleteKindOperation() (*KindOperation, error) {
 // Se refiere a si compras unos tenis, verduras, gymnasio, audifonos
 type KindProduct struct {
 	gorm.Model
-	Name string
+	Name string `json:"name_product" binding:"required"`
 }
 
 func (kp *KindProduct) CreateKindProduct() error {
@@ -148,8 +148,8 @@ func (kp *KindProduct) GetKindProducts() (*[]KindProduct, error) {
 
 type Store struct {
 	gorm.Model
-	Name     string
-	IsOnline bool
+	Name     string `json:"name_store" binding:"required"`
+	IsOnline bool   `json:"is_online,string" binding:"required"`
 }
 
 func (s *Store) CreateStore() error {
@@ -189,10 +189,10 @@ func (s *Store) GetStores() (*[]Store, error) {
 
 type MonthlyPayment struct {
 	gorm.Model
-	UserId       int64
-	CreditCardId int64
-	MonthlyPaid  float64
-	Pending      float64
+	UserId       int64   `json:"user_id,string" binding:"required"`
+	CreditCardId int64   `json:"credit_card_id,string" binding:"required"`
+	MonthlyPaid  float64 `json:"monthly_paid,string" binding:"required"`
+	Pending      float64 `json:"pending,string" binding:"required"`
 }
 
 func (mp *MonthlyPayment) CreateMonthlyPayment() error {
@@ -242,15 +242,15 @@ func (mp *MonthlyPayment) GetMonthlyPayments() (*[]MonthlyPayment, error) {
 
 type Operation struct {
 	gorm.Model
-	UserId          int64
-	CreditCardId    int64
-	StoreId         int64
-	KindOperationId int64
-	KindProductId   int64
-	Amount          int64
-	Description     string
-	Periods         int64
-	PendingPeriods  int64
+	UserId          int64 `json:"user_id,string" binding:"required"`
+	CreditCardId    int64 `json:"credit_card_id,string" binding:"required"`
+	StoreId         int64 `json:"store_id,string" binding:"required"`
+	KindOperationId int64 `json:"kind_operation_id,string" binding:"required"`
+	KindProductId   int64 `json:"kind_product_id,string" binding:"required"`
+	Amount          int64 `json:"amount,string" binding:"required"`
+	Description     string `json:"description" binding:"required"`
+	Periods         int64 `json:"periods,string" binding:"required"`
+	PendingPeriods  int64 `json:"pending_periods,string" binding:"required"`
 	User            User
 	CreditCard      CreditCard
 	Store           Store

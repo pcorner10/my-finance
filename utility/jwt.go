@@ -80,7 +80,6 @@ func getTokenFromRequest(context *gin.Context) string {
 
 	splitToken := strings.Split(bearerToken, " ")
 	if len(splitToken) == 2 {
-		fmt.Println(splitToken[1], "samina")
 		return splitToken[1]
 	}
 	return ""
