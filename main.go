@@ -45,7 +45,6 @@ func serveApplication() {
 	// Add CORS middleware
 
 	// unable credentials
-	
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
@@ -86,6 +85,7 @@ func serveApplication() {
 
 			operation := shopping.Group("/operation")
 			operation.POST("/create", controller.CreateOperation)
+			operation.GET("/lastoperations/:id", controller.GetLast5Operations)
 		}
 	}
 

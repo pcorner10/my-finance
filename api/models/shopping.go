@@ -248,7 +248,7 @@ type Operation struct {
 	StoreId         int64  `json:"store_id,string"`
 	KindOperationId int64  `json:"kind_operation_id,string"`
 	KindProductId   int64  `json:"kind_product_id,string"`
-	Amount          int64  `json:"amount,string"`
+	Amount          float64  `json:"amount,string"`
 	Description     string `json:"description"`
 	Periods         int64  `json:"periods,string"`
 	PendingPeriods  int64  `json:"pending_periods,string"`
@@ -295,7 +295,15 @@ func (o *Operation) GetOperationsByDateRange(DateRange DateRange) (*[]Operation,
 		return nil, err
 	}
 	return operations, nil
+}
 
+func (o *Operation) GetLast5Operations() (*[]Operation, error) {
+	var operations *[]Operation
+	err := database.Database.Where("user_id = ?", o.UserId).Order("fecha_movimiento desc").Limit(5).Find(&operations).Error
+	if err != nil {
+		return nil, err
+	}
+	return operations, nil
 }
 
 type DateRange struct {

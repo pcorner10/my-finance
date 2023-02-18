@@ -74,6 +74,23 @@ func GetKindOperations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"KindOperations": listKindOperation})
 }
 
+func GetLast5Operations(ctx *gin.Context) {
+	userID := ctx.Param("id")
+	var input models.Operation
+	// userID is a string, so we need to convert it to an int64
+	userIDInt, _ := strconv.ParseInt(userID, 10, 64)
+
+	input.UserId = userIDInt
+	
+	listOperation, err := input.GetLast5Operations()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"Last5Operations": listOperation})
+}
+
 func CreateKindProduct(ctx *gin.Context) {
 
 	var input models.KindProduct
