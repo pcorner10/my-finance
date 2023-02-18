@@ -12,7 +12,6 @@ var Database *gorm.DB
 
 func Connect() {
 	var err error
-
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	dbname := os.Getenv("DB_NAME")

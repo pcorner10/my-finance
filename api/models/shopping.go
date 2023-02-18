@@ -13,8 +13,8 @@ type CreditCard struct {
 	UserId          int64     `json:"user_id,string" uri:"id" form:"id"`
 	Bank            string    `json:"bank"`
 	IsCredit        bool      `json:"is_credit,string"`
-	DatePayment     time.Time `json:"date_payment"`
-	DateCutoff      time.Time `json:"date_cutoff"`
+	DatePayment     time.Time `json:"date_payment" gorm:"type:timestamp with time zone"`
+	DateCutoff      time.Time `json:"date_cutoff" gorm:"type:timestamp with time zone"`
 	CreditLimit     float64   `json:"credit_limit,string"`
 	CreditAvailable float64   `json:"credit_available,string"`
 }
@@ -243,16 +243,16 @@ func (mp *MonthlyPayment) GetMonthlyPayments() (*[]MonthlyPayment, error) {
 
 type Operation struct {
 	gorm.Model
-	UserId          int64  `json:"user_id,string"`
-	CreditCardId    int64  `json:"credit_card_id,string"`
-	StoreId         int64  `json:"store_id,string"`
-	KindOperationId int64  `json:"kind_operation_id,string"`
-	KindProductId   int64  `json:"kind_product_id,string"`
-	Amount          float64  `json:"amount,string"`
-	Description     string `json:"description"`
-	Periods         int64  `json:"periods,string"`
-	PendingPeriods  int64  `json:"pending_periods,string"`
-	FechaMovimiento string `json:"fecha_movimiento"`
+	UserId          int64     `json:"user_id,string"`
+	CreditCardId    int64     `json:"credit_card_id,string"`
+	StoreId         int64     `json:"store_id,string"`
+	KindOperationId int64     `json:"kind_operation_id,string"`
+	KindProductId   int64     `json:"kind_product_id,string"`
+	Amount          float64   `json:"amount,string"`
+	Description     string    `json:"description"`
+	Periods         int64     `json:"periods,string"`
+	PendingPeriods  int64     `json:"pending_periods,string"`
+	FechaMovimiento time.Time `json:"fecha_movimiento" gorm:"type:timestamp with time zone"`
 	User            User
 	CreditCard      CreditCard
 	Store           Store
