@@ -11,7 +11,7 @@ type CreditCard struct {
 	gorm.Model
 	LastNumbers     uint64    `json:"last_numbers,string" gorm:"unique;not null"`
 	UserId          int64     `json:"user_id,string" uri:"id" form:"id"`
-	Bank            string    `json:"bank"`
+	Bank            string    `json:"|"`
 	IsCredit        bool      `json:"is_credit,string"`
 	DatePayment     time.Time `json:"date_payment" gorm:"type:timestamp with time zone"`
 	DateCutoff      time.Time `json:"date_cutoff" gorm:"type:timestamp with time zone"`
